@@ -50,7 +50,7 @@ void VideoReaderNode::timerCallback()
 {
     cv::Mat frame;
     if (cap_.read(frame)) {
-        auto msg = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", frame).toImageMsg();
+        auto msg = cv_bridge::CvImage(std_msgs::msg::Header(), "rgb8", frame).toImageMsg();
         msg->header.frame_id = "camera_optical_frame";
         msg->header.stamp = this->now();
         camera_info_msg_.header = msg->header;
