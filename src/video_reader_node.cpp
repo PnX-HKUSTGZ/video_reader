@@ -7,7 +7,7 @@ namespace video_reader
 VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions & options)
 : Node("video_reader_node", options)
 {
-    auto video_path = ament_index_cpp::get_package_share_directory("video_reader") + "/docs/test.mp4";
+    auto video_path = ament_index_cpp::get_package_share_directory("video_reader") + "/docs/test.avi";
     RCLCPP_INFO(this->get_logger(), "Video path: %s", video_path.c_str());
 
     cap_.open(video_path);
