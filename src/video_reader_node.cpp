@@ -1,13 +1,13 @@
 #include "video_reader/video_reader_node.hpp"
+
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
-namespace video_reader
-{
+namespace video_reader {
 
-VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions & options)
-: Node("video_reader_node", options)
-{
-    auto video_path = ament_index_cpp::get_package_share_directory("video_reader") + "/docs/test.avi";
+VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions& options)
+    : Node("video_reader_node", options) {
+    auto video_path =
+        ament_index_cpp::get_package_share_directory("video_reader") + "/docs/test.avi";
     RCLCPP_INFO(this->get_logger(), "Video path: %s", video_path.c_str());
 
     cap_.open(video_path);
@@ -32,8 +32,8 @@ VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions & options)
     camera_name_ = this->declare_parameter("camera_name", "video_camera");
     camera_info_manager_ =
         std::make_unique<camera_info_manager::CameraInfoManager>(this, camera_name_);
-    auto camera_info_url =
-        this->declare_parameter("camera_info_url", "package://video_reader/config/camera_info.yaml");
+    auto camera_info_url = this->declare_parameter(
+        "camera_info_url", "package://video_reader/config/camera_info.yaml");
     if (camera_info_manager_->validateURL(camera_info_url)) {
         camera_info_manager_->loadCameraInfo(camera_info_url);
         camera_info_msg_ = camera_info_manager_->getCameraInfo();
@@ -41,13 +41,11 @@ VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions & options)
         RCLCPP_WARN(this->get_logger(), "Invalid camera info URL: %s", camera_info_url.c_str());
     }
 
-    timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(static_cast<int>(1000 / fps)),
-        std::bind(&VideoReaderNode::timerCallback, this));
+    timer_ = this->create_wall_timer(std::chrono::milliseconds(static_cast<int>(1000 / fps)),
+                                     std::bind(&VideoReaderNode::timerCallback, this));
 }
 
-void VideoReaderNode::timerCallback()
-{
+void VideoReaderNode::timerCallback() {
     cv::Mat frame;
     if (cap_.read(frame)) {
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
