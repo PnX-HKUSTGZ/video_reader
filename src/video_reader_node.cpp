@@ -6,11 +6,13 @@ namespace video_reader {
 
 VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions& options)
     : Node("video_reader_node", options) {
-    auto video_path =
-        ament_index_cpp::get_package_share_directory("video_reader") + "/docs/test4Armors.mp4";
-    RCLCPP_INFO(this->get_logger(), "Video path: %s", video_path.c_str());
+    // 读取视频文件路径参数
+    std::string video_path = this->declare_parameter<std::string>("video_path", "/docs/test4Armors.mp4");
+    auto video_path_full =
+        ament_index_cpp::get_package_share_directory("video_reader") + video_path;
+    RCLCPP_INFO(this->get_logger(), "Video path: %s", video_path_full.c_str());
 
-    cap_.open(video_path);
+    cap_.open(video_path_full);
     if (!cap_.isOpened()) {
         RCLCPP_ERROR(this->get_logger(), "Failed to open video file");
         rclcpp::shutdown();
