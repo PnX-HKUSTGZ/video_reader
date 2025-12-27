@@ -7,7 +7,7 @@ namespace video_reader {
 VideoReaderNode::VideoReaderNode(const rclcpp::NodeOptions& options)
     : Node("video_reader_node", options) {
     // 读取视频文件路径参数
-    std::string video_path = this->declare_parameter<std::string>("video_path", "/docs/test4Armors.mp4");
+    std::string video_path = this->declare_parameter<std::string>("video_path", "/docs/test4armors_new.mp4");
     auto video_path_full =
         ament_index_cpp::get_package_share_directory("video_reader") + video_path;
     RCLCPP_INFO(this->get_logger(), "Video path: %s", video_path_full.c_str());
