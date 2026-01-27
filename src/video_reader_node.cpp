@@ -52,7 +52,7 @@ void VideoReaderNode::timerCallback() {
     if (cap_.read(frame)) {
         cv::cvtColor(frame, frame, cv::COLOR_BGR2RGB);
         auto msg = cv_bridge::CvImage(std_msgs::msg::Header(), "rgb8", frame).toImageMsg();
-        msg->header.frame_id = "camera_optical_frame";
+        msg->header.frame_id = "camera_main_optical_frame";
         msg->header.stamp = this->now();
         camera_info_msg_.header = msg->header;
         camera_pub_.publish(*msg, camera_info_msg_);
